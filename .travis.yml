@@ -1,0 +1,13 @@
+language: python
+python:
+  - 2.7
+
+services:
+  - docker
+
+install:
+  - docker build -t ubuntu .
+  - docker run --name ubuntu ubuntu echo 'Hello'
+
+script:
+  - docker ps -a | grep ubuntu
