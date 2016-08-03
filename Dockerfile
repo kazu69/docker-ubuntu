@@ -40,13 +40,12 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Install phpenv
-ENV PATH $HOME/.phpenv/bin:$PATH
 ENV PHPENV_ROOT $HOME/.phpenv
 
 RUN git clone https://github.com/CHH/phpenv.git /tmp/phpenv && \
     ./tmp/phpenv/bin/phpenv-install.sh && \
     echo 'eval \"\$(phpenv init -)\"' >> /etc/profile.d/phpenv.sh && \
-    echo 'eval "$(phpenv init -)"' >> $HOME/.bashrc
+    echo 'eval "$(phpenv init -)"' >> /root/.bashrc
 
 RUN git clone git://github.com/CHH/php-build.git ${PHPENV_ROOT}/plugins/php-build && \
     cp /tmp/phpenv/extensions/rbenv-config-* ${PHPENV_ROOT}/plugins/php-build/bin/ && \
@@ -54,13 +53,15 @@ RUN git clone git://github.com/CHH/php-build.git ${PHPENV_ROOT}/plugins/php-buil
 
 ADD default_configure_options ${PHPENV_ROOT}/plugins/php-build/share/php-build/
 
+ENV PATH $HOME/.phpenv/bin:$HOME/.phpenv/shims:$PATH
+
 RUN cd $HOME && \
     wget http://getcomposer.org/composer.phar && \
     chmod +x composer.phar && \
-    mv composer.phar /usr/local/bin/composer && \
-    wget https://phar.phpunit.de/phpunit.phar && \
-    chmod +x phpunit.phar && \
-    mv phpunit.phar /usr/local/bin/phpunit
+    mv composer.phar /usr/local/bin/composer
+#    wget https://phar.phpunit.de/phpunit.phar && \
+#    chmod +x phpunit.phar && \
+#    mv phpunit.phar /usr/local/bin/phpunit
 
 RUN ln -s /usr/lib/x86_64-linux-gnu/libldap.so /usr/lib/libldap.so && \
     ln -s /usr/lib/x86_64-linux-gnu/libpng.so /usr/lib/libpng.so && \
@@ -108,3 +109,5 @@ ADD ruby-version /root/ruby-version
 RUN xargs -L 1 rbenv install < /root/ruby-version
 RUN echo 'gem: --no-rdoc --no-ri' >> /.gemrc
 RUN bash -c 'for v in $(cat /root/ruby-version); do rbenv global $v; gem install bundler; done'
+
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
