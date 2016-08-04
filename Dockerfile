@@ -58,10 +58,10 @@ ENV PATH $HOME/.phpenv/bin:$HOME/.phpenv/shims:$PATH
 RUN cd $HOME && \
     wget http://getcomposer.org/composer.phar && \
     chmod +x composer.phar && \
-    mv composer.phar /usr/local/bin/composer
-#    wget https://phar.phpunit.de/phpunit.phar && \
-#    chmod +x phpunit.phar && \
-#    mv phpunit.phar /usr/local/bin/phpunit
+    mv composer.phar /usr/local/bin/composer && \
+    wget https://phar.phpunit.de/phpunit.phar && \
+    chmod +x phpunit.phar && \
+    mv phpunit.phar /usr/local/bin/phpunit
 
 RUN ln -s /usr/lib/x86_64-linux-gnu/libldap.so /usr/lib/libldap.so && \
     ln -s /usr/lib/x86_64-linux-gnu/libpng.so /usr/lib/libpng.so && \
@@ -103,6 +103,7 @@ RUN echo 'eval "$(rbenv init -)"' >> /etc/profile.d/rbenv.sh && \
 # Install php versions
 ADD php-version /root/php-version
 RUN xargs -L 1 phpenv install < /root/php-version
+RUN bash -c 'for v in $(cat /root/php-version); do rbenv global $v; done'
 
 # Install ruby versions
 ADD ruby-version /root/ruby-version
