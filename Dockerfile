@@ -103,7 +103,7 @@ RUN echo 'eval "$(rbenv init -)"' >> /etc/profile.d/rbenv.sh && \
 # Install php versions
 ADD php-version /root/php-version
 RUN xargs -L 1 phpenv install < /root/php-version
-RUN bash -c 'for v in $(cat /root/php-version); do rbenv global $v; done'
+RUN bash -c 'for v in $(cat /root/php-version); do phpenv global $v; done'
 
 # Install ruby versions
 ADD ruby-version /root/ruby-version
