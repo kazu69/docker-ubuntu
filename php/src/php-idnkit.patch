@@ -1,0 +1,20 @@
+--- idnkit.c    2003-12-04 13:01:24.000000000 +0900
++++ idnkit.c 2016-08-13 11:55:15.183057789 +0900
+@@ -36,7 +36,7 @@
+  *
+  * Every user visible function must have an entry in idnkit_functions[].
+  */
+-function_entry idnkit_functions[] = {
++zend_function_entry idnkit_functions[] = {
+    PHP_FE(idnkit_decodename,   NULL)
+    PHP_FE(idnkit_encodename,   NULL)
+    PHP_FE(idnkit_errno,        NULL)
+@@ -104,7 +104,7 @@
+    idn_nameinit(1);
+
+    /* get idnkit version */
+-   REGISTER_STRING_CONSTANT("IDNKIT_VERSION", (char*)idn_version_getstring(), CONST_CS | CONST_PERSISTENT);
++   REGISTER_STRING_CONSTANT("IDNKIT_VERSION", "1.0", CONST_CS | CONST_PERSISTENT);
+
+    /* idnkit actions */
+    REGISTER_LONG_CONSTANT("IDNKIT_DELIMMAP",       IDN_DELIMMAP,       CONST_CS | CONST_PERSISTENT);
