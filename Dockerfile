@@ -1,5 +1,5 @@
 FROM kazu69/ubuntu:base
-MAINTAINER kazu69 "kazu.69.web+docker@gmail.com"
+MAINTAINER kazu69
 
 # Install phpbrew
 RUN apt-get update && \
